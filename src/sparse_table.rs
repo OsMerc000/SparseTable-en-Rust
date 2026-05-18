@@ -1,8 +1,9 @@
 pub use std::fmt::Display;
 
 //Un SparseTable lo podemos construir como un vector de vectores
+#[derive(Debug)]
 pub struct SparseTable<T> {
-    st: Vec<Vec<T>>
+    pub st: Vec<Vec<T>>
 }
 
 /*
@@ -107,7 +108,7 @@ impl<T: PartialOrd + Clone> SparseTable<T> {
         Self {st}
     }
 
-    pub fn query(&self, left: usize, right: usize) -> Option<&T> {
+    pub fn query(&self, left: usize, right: usize) -> Option<T> {
         if left > right
             || self.st.len() == 0
             || self.st[0].len() <= left 
@@ -121,7 +122,7 @@ impl<T: PartialOrd + Clone> SparseTable<T> {
         };
         let u = &self.st[size as usize][left];
         let v = &self.st[size as usize][right - (2_usize.pow(size) - 1)];
-        return if u < v {Some(u)} else {Some(v)};
+        return if u < v {Some(u.clone())} else {Some(v.clone())};
     }
 }
 
@@ -140,5 +141,30 @@ impl<T: Display> Display for SparseTable<T> {
         s.pop();
         s.pop();
         write!(f, "{s}")
+    }
+}
+
+impl<T: PartialOrd> PartialEq for SparseTable<T> {
+    fn eq(&self, other: &Self) -> bool {
+        if self.st.len() != other.st.len() {
+            return false;
+        };
+
+        for i in 0..self.st.len() {
+            if self.st[i].len() != other.st[i].len() {
+                return false;
+            }
+            for j in 0..self.st[i].len() {
+                if self.st[i][j] != other.st[i][j] {
+                    return false;
+                }
+            }
+        };
+
+        return true;
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        !Self::eq(&self, &other)
     }
 }

@@ -1,39 +1,22 @@
-use sparse_table::{SparseTable, Display};
+use sparse_table::SparseTable;
 
 mod sparse_table;
 
 fn main() {
     let arr: Vec<i32> = vec![2, 1, 6, 3, 0, 10, -1];
-    print!("Este es su array: ");
-    show_arr(&arr);
     let st = SparseTable::new(&arr);
-    println!("\nEste es su SparseTable = {{\n{st}\n}}");
-    print!("Query: 2 - 2 = ");
-    if let Some(num) = st.query(2, 2) {
-        println!("{num}")
-    } else {
-        println!("None")
+    {
+        let st1 = SparseTable {
+            st: vec![
+                vec![2, 1, 6, 3, 0, 10, -1],
+                vec![1, 1, 3, 0, 0, -1],
+                vec![1, 0, 0, -1]
+            ]
+        };
+        assert_eq!(st, st1);
     }
-    print!("Query: 0 - 6 = ");
-    if let Some(num) = st.query(0, 6) {
-        println!("{num}")
-    } else {
-        println!("None")
-    }
-    print!("Query: 2 - 5 = ");
-    if let Some(num) = st.query(2, 5) {
-        println!("{num}")
-    } else {
-        println!("None")
-    }
-}
-
-fn show_arr<T: Display>(arr: &[T]) {
-    let mut s = String::new();
-    for e in arr {
-        s = s + &e.to_string() + ", ";
-    }
-    s.pop();
-    s.pop();
-    print!("[ {} ]", s);
+    assert_eq!(st.query(2, 2), Some(6));
+    assert_eq!(st.query(0, 6), Some(-1));
+    assert_eq!(st.query(2, 5), Some(0));
+    assert_eq!(st.query(9, 10), None);
 }
