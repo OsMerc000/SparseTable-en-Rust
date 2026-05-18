@@ -108,7 +108,7 @@ impl<T: PartialOrd + Clone> SparseTable<T> {
         Self {st}
     }
 
-    pub fn query(&self, left: usize, right: usize) -> Option<T> {
+    pub fn query(&self, left: usize, right: usize) -> Option<&T> {
         if left > right
             || self.st.len() == 0
             || self.st[0].len() <= left 
@@ -122,7 +122,7 @@ impl<T: PartialOrd + Clone> SparseTable<T> {
         };
         let u = &self.st[size as usize][left];
         let v = &self.st[size as usize][right - (2_usize.pow(size) - 1)];
-        return if u < v {Some(u.clone())} else {Some(v.clone())};
+        return if u < v {Some(u)} else {Some(v)};
     }
 }
 

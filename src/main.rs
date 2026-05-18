@@ -13,10 +13,10 @@ fn main() {
                 vec![1, 0, 0, -1]
             ]
         };
-        assert_eq!(st, st1);
+        assert_eq!(st, st1); //st == st1
     }
-    assert_eq!(st.query(2, 2), Some(6));
-    assert_eq!(st.query(0, 6), Some(-1));
-    assert_eq!(st.query(2, 5), Some(0));
-    assert_eq!(st.query(9, 10), None);
+    assert_eq!(st.query(2, 2).unwrap().to_owned(), 6);  //6 == 6
+    assert_eq!(st.query(0, 6).unwrap().to_owned(), -1); //-1 == -1
+    assert_eq!(st.query(2, 5).unwrap().to_owned(), 0);  // 0 == 0
+    assert_eq!(st.query(9, 10), None);  //None == None
 }
