@@ -7,26 +7,26 @@ pub struct SparseTable<T> {
 
 /*
 Métodos para el SparseTable
-La parte de T: PartialOrd implica que el tipo genérico T es un tipo que
-podamos comparar (<, >, ==, <=, >=) y también clonar.
+La parte de T: PartialOrd implica que el tipo genérico T es un tipo que podamos 
+comparar (<, >, ==, <=, >=) y también clonar.
 */
 impl<T: PartialOrd + Clone> SparseTable<T> {
     pub fn new(arr: &[T]) -> Self {
         let len = arr.len();
 
         /*
-        El SparseTable tendrá niveles desde 0 hasta el logaritmo entero de
-        la cantidad de elementos del array. Los niveles representan el 
-        elemento mínimo del array desde la posición j hasta la posición 
-        j + (2^i) - 1 donde i es el nivel en el que nos encontramos. O sea,
-        si tuvieramos un arr de la siguiente forma:
+        El SparseTable tendrá niveles desde 0 hasta el logaritmo entero de la
+        cantidad de elementos del array. Los niveles representan el elemento 
+        mínimo del array desde la posición j hasta la posición j + (2^i) - 1
+        donde i es el nivel en el que nos encontramos. O sea, si tuvieramos un 
+        arr de la siguiente forma:
         
         arr = [1, 6, 7, 8, 2]
 
         El nivel 0 sería el mismo array.
         
-        El nivel 1 sería un array de los elementos mínimos de cada subarray
-        de tamaño 2. Tal que así:
+        El nivel 1 sería un array de los elementos mínimos de cada subarray de
+        tamaño 2. Tal que así:
         arr1 = [min(0..1), min(1..2), min(2..3), min(3..4)]
         arr1 = [1, 6, 7, 2]
 
@@ -35,11 +35,11 @@ impl<T: PartialOrd + Clone> SparseTable<T> {
         arr2 = [min(0..3), min(1..4)]
         arr2 = [1, 2]
 
-        Nótese que, debido a lo que representa cada nivel, no puede
-        exirtir un nivel 3. Porque eso significaría un subarray de 8
-        elementos, pero nuestro array solo tiene 5 elementos. Por ende,
-        podemos concluir que la cantidad de niveles máximo el logartimo en
-        base 2 redondeado abajo de la cantidad de elementos del array.
+        Nótese que, debido a lo que representa cada nivel, no puede exirtir un
+        nivel 3. Porque eso significaría un subarray de 8 elementos, pero 
+        nuestro array solo tiene 5 elementos. Por ende, podemos concluir que 
+        la cantidad de niveles máximo el logartimo en base 2 redondeado abajo 
+        de la cantidad de elementos del array.
         */
         let size = if arr.len() > 0 {
             arr.len().ilog2()
@@ -53,8 +53,7 @@ impl<T: PartialOrd + Clone> SparseTable<T> {
         /*
         Alojamos la cantidad suficiente de espacio para los punteros a los
         vectores que conformarán nuestro SparseTable. La razón por la que es
-        size + 1 es porque tenemos que incluir el nivel 0 (El mismo
-        array).
+        size + 1 es porque tenemos que incluir el nivel 0 (El mismo array).
         */
         let mut st: Vec<Vec<T>> = Vec::with_capacity(size as usize + 1);
         //Alojamos al nivel 0 el mismo array
@@ -62,9 +61,8 @@ impl<T: PartialOrd + Clone> SparseTable<T> {
         //Nos ubicamos en el nivel correspondiente. Size es incusivo.
         for i in 1..=size {
             /*
-            Calculamos la cantidad de elementos que habrán en el i-ésimo
-            nivel del SparseTable. Y luego de ello alojamos el espacio
-            necesario.
+            Calculamos la cantidad de elementos que habrán en el i-ésimo nivel 
+            del SparseTable. Y luego de ello alojamos el espacio necesario.
             */
             let num_elem = len - (2_usize.pow(i) - 1);
             st.push(Vec::with_capacity(num_elem));
